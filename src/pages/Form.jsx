@@ -1,8 +1,56 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import axios from "axios"; 
 
 const Form = () => {
+  const [formData, setFormData] = useState({
+    companyName: "",
+    workEmail: "",
+    phoneNumber: "",
+    averageEventsPerMonth: "",
+    termsAccepted: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form Data Submitted: ", formData);
+    try {
+      const response = await axios.post(
+        "https://sheet.best/api/sheets/82f5ffa3-5d25-4052-8d02-8a172e14afbd",
+        formData
+      );
+
+      console.log("Response from API: ", response);
+      if (response.status === 200) {
+        alert("Form submitted successfully!");
+        // Optionally, you can reset the form or navigate to another page
+        setFormData({
+          companyName: "",
+          workEmail: "",
+          phoneNumber: "",
+          averageEventsPerMonth: "",
+          termsAccepted: false,
+        });
+        // onClose(); // Assuming onClose function is defined elsewhere
+      } else {
+        alert("Error submitting form");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error submitting form");
+    }
+  };
+
   const onGroupContainer1Click = useCallback(() => {
-    // Please sync "Click Ai" to the project
+    // Placeholder function, add your logic here if needed
+    console.log("Group container 1 clicked");
   }, []);
 
   return (
@@ -17,29 +65,14 @@ const Form = () => {
       </b>
       <div className="absolute top-[32px] left-[1236px] rounded-mini box-border w-36 h-[47px] border-[1px] border-solid border-black" />
       <div className="absolute top-[45px] left-[1278px]">Buy now</div>
-      <div className="absolute top-[4900px] left-[1885px] rounded-xl bg-gainsboro w-[430px] h-[596px]" />
-      <b className="absolute top-[4945px] left-[1553px] text-17xl inline-block font-adineue-pro w-[332px] h-[81px]">
-        Reporting Functionality
-      </b>
-      <b className="absolute top-[4945px] left-[1916px] text-17xl inline-block font-adineue-pro w-[277px] h-[81px]">
-        Customer management with outstanding balance tracking
-      </b>
-      <div className="absolute top-[5036px] left-[1553px] font-adineue-pro inline-block w-[282px] h-[55px]">
-        To invite guests to your event, create awesome digital invitations that
-        are sure to catch their attention.
-      </div>
-      <div className="absolute top-[5123px] left-[1916px] font-adineue-pro inline-block w-[282px] h-[55px]">
-        To invite guests to your event, create awesome digital invitations that
-        are sure to catch their attention.
-      </div>
-      <b className="absolute top-[166px] left-[140px] text-[60px] font-adineue-pro">
+      <div className="absolute top-[166px] left-[140px] text-[60px] font-adineue-pro">
         <p className="m-0 text-dodgerblue">
           <span className="text-black">Book your</span>
           <span> 30 - minute</span>
         </p>
         <p className="m-0">personalized Click Ai</p>
         <p className="m-0">demo today!</p>
-      </b>
+      </div>
       <div className="absolute top-[401px] left-[140px] text-5xl text-dimgray inline-block w-[628px]">
         <p className="m-0">
           Let our sales experts to take you on a whirlwind tour of how Click Ai
@@ -48,44 +81,82 @@ const Form = () => {
       </div>
       <div className="absolute top-[528px] left-[134px] rounded-mini bg-seashell w-[634px] h-[336px]" />
       <div className="absolute top-[152px] left-[809px] rounded-mini bg-indianred w-[643px] h-[983px]" />
-      <div className="absolute top-[387px] left-[884px] rounded-mini bg-white w-[497px] h-20" />
-      <div className="absolute top-[523px] left-[884px] rounded-mini bg-white w-[497px] h-20" />
-      <div className="absolute top-[784px] left-[882px] rounded-mini bg-white w-[497px] h-20" />
-      <div className="absolute top-[659px] left-[1028px] rounded-mini bg-white w-[351px] h-20" />
-      <div className="absolute top-[661px] left-[882px] rounded-mini bg-white w-[131px] h-20" />
-      <b className="absolute top-[235px] left-[884px] text-17xl inline-block font-adineue-pro text-white w-[551px]">
-        Start the conversation for your event
-      </b>
-      <div className="absolute top-[353px] left-[901px] text-xl font-medium text-white">
-        Company name
-      </div>
-      <div className="absolute top-[489px] left-[901px] text-xl font-medium text-white">
-        Work Email
-      </div>
-      <div className="absolute top-[625px] left-[899px] text-xl font-medium text-white">
-        Phone number
-      </div>
-      <div className="absolute top-[812px] left-[913px] text-xl font-medium">
-        Average events per month
-      </div>
-      <div className="absolute top-[812px] left-[913px] text-xl font-medium">
-        Average events per month
-      </div>
-      <div className="absolute top-[812px] left-[913px] text-xl font-medium">
-        Average events per month
-      </div>
-      <div className="absolute top-[890px] left-[932px] text-xl text-white inline-block w-[402px]">
-        <span>I agree to click Ai’s</span>
-        <span className="font-medium">{` Terms and Services `}</span>
-        <span>{`and `}</span>
-        <span className="font-medium">Privacy Policy.</span>
-      </div>
-      <div className="absolute top-[890px] left-[891px] rounded-[5px] bg-white w-[30px] h-[30px]" />
-      <div className="absolute top-[993px] left-[882px] rounded-3xs bg-white w-[232px] h-20" />
-      <div className="absolute top-[1018px] left-[929px] font-medium text-gray text-5xl">
-        <span>Let’s talk</span>
-        <span className="text-xl">{` `}</span>
-      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className="absolute top-[387px] left-[884px] rounded-mini bg-white w-[497px] h-20">
+          <input
+            type="text"
+            name="companyName"
+            placeholder="Company name"
+            value={formData.companyName}
+            onChange={handleChange}
+            className="w-full h-full rounded-mini p-4 text-xl"
+            required
+          />
+        </div>
+        <div className="absolute top-[523px] left-[884px] rounded-mini bg-white w-[497px] h-20">
+          <input
+            type="email"
+            name="workEmail"
+            placeholder="Work Email"
+            value={formData.workEmail}
+            onChange={handleChange}
+            className="w-full h-full rounded-mini p-4 text-xl"
+            required
+          />
+        </div>
+        <div className="absolute top-[659px] left-[884px] rounded-mini bg-white w-[497px] h-20">
+          <input
+            type="tel"
+            name="phoneNumber"
+            placeholder="Phone number"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            className="w-full h-full rounded-mini p-4 text-xl"
+            required
+          />
+        </div>
+        <div className="absolute top-[784px] left-[882px] rounded-mini bg-white w-[497px] h-20">
+          <select
+            name="averageEventsPerMonth"
+            value={formData.averageEventsPerMonth}
+            onChange={handleChange}
+            className="w-full h-full rounded-mini p-4 text-xl"
+            required
+          >
+            <option value="" disabled>
+              Average events per month
+            </option>
+            <option value="1-5">1-5</option>
+            <option value="6-10">6-10</option>
+            <option value="11-20">11-20</option>
+            <option value="21+">21+</option>
+          </select>
+        </div>
+        <div className="absolute top-[890px] left-[891px] flex items-center">
+          <input
+            type="checkbox"
+            name="termsAccepted"
+            checked={formData.termsAccepted}
+            onChange={handleChange}
+            className="w-5 h-5"
+            required
+          />
+          <label className="ml-2 text-xl text-white">
+            <span>I agree to click Ai’s</span>
+            <span className="font-medium">{` Terms and Services `}</span>
+            <span>{`and `}</span>
+            <span className="font-medium">Privacy Policy.</span>
+          </label>
+        </div>
+        <button
+          type="submit"
+          className="absolute top-[993px] left-[882px] rounded-3xs bg-white w-[232px] h-20 text-5xl text-gray font-medium"
+        >
+          Let’s talk
+        </button>
+      </form>
+
       <div className="absolute top-[577px] left-[191px] text-5xl font-medium text-salmon inline-block w-[484px] h-[30px]">
         “Figma ipsum component variant main layer”
       </div>
